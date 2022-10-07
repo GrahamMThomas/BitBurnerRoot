@@ -1,0 +1,1 @@
+alias bonk="run BruteSSH.exe; run FTPCrack.exe; run relaySMTP.exe; run HTTPWorm.exe; run SQLInject.exe; run Nuke.exe"
