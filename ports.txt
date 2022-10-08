@@ -1,4 +1,0 @@
-Port uses:
-1 - AhegaoDaemon for marking servers for upgrade
-2 - Jenkins for mutex locking
-5 - BeaverDaemon for logs

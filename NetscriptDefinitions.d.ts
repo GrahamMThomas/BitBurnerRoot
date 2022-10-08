@@ -76,66 +76,36 @@ interface Player {
  * @public
  */
 export interface Multipliers {
-  /** Multiplier to hacking skill */
-  hacking?: number;
-  /** Multiplier to strength skill */
-  strength?: number;
-  /** Multiplier to defense skill */
-  defense?: number;
-  /** Multiplier to dexterity skill */
-  dexterity?: number;
-  /** Multiplier to agility skill */
-  agility?: number;
-  /** Multiplier to charisma skill */
-  charisma?: number;
-  /** Multiplier to hacking experience gain rate */
-  hacking_exp?: number;
-  /** Multiplier to strength experience gain rate */
-  strength_exp?: number;
-  /** Multiplier to defense experience gain rate */
-  defense_exp?: number;
-  /** Multiplier to dexterity experience gain rate */
-  dexterity_exp?: number;
-  /** Multiplier to agility experience gain rate */
-  agility_exp?: number;
-  /** Multiplier to charisma experience gain rate */
-  charisma_exp?: number;
-  /** Multiplier to chance of successfully performing a hack */
-  hacking_chance?: number;
-  /** Multiplier to hacking speed */
-  hacking_speed?: number;
-  /** Multiplier to amount of money the player gains from hacking */
-  hacking_money?: number;
-  /** Multiplier to amount of money injected into servers using grow */
-  hacking_grow?: number;
-  /** Multiplier to amount of reputation gained when working */
-  company_rep?: number;
-  /** Multiplier to amount of reputation gained when working */
-  faction_rep?: number;
-  /** Multiplier to amount of money gained from crimes */
-  crime_money?: number;
-  /** Multiplier to crime success rate */
-  crime_success?: number;
-  /** Multiplier to amount of money gained from working */
-  work_money?: number;
-  /** Multiplier to amount of money produced by Hacknet Nodes */
-  hacknet_node_money?: number;
-  /** Multiplier to cost of purchasing a Hacknet Node */
-  hacknet_node_purchase_cost?: number;
-  /** Multiplier to cost of ram for a Hacknet Node */
-  hacknet_node_ram_cost?: number;
-  /** Multiplier to cost of core for a Hacknet Node */
-  hacknet_node_core_cost?: number;
-  /** Multiplier to cost of leveling up a Hacknet Node */
-  hacknet_node_level_cost?: number;
-  /** Multiplier to Bladeburner max stamina */
-  bladeburner_max_stamina?: number;
-  /** Multiplier to Bladeburner stamina gain rate */
-  bladeburner_stamina_gain?: number;
-  /** Multiplier to effectiveness in Bladeburner Field Analysis */
-  bladeburner_analysis?: number;
-  /** Multiplier to success chance in Bladeburner contracts/operations */
-  bladeburner_success_chance?: number;
+  hacking_chance: number;
+  hacking_speed: number;
+  hacking_money: number;
+  hacking_grow: number;
+  hacking: number;
+  hacking_exp: number;
+  strength: number;
+  strength_exp: number;
+  defense: number;
+  defense_exp: number;
+  dexterity: number;
+  dexterity_exp: number;
+  agility: number;
+  agility_exp: number;
+  charisma: number;
+  charisma_exp: number;
+  hacknet_node_money: number;
+  hacknet_node_purchase_cost: number;
+  hacknet_node_ram_cost: number;
+  hacknet_node_core_cost: number;
+  hacknet_node_level_cost: number;
+  company_rep: number;
+  faction_rep: number;
+  work_money: number;
+  crime_success: number;
+  crime_money: number;
+  bladeburner_max_stamina: number;
+  bladeburner_stamina_gain: number;
+  bladeburner_analysis: number;
+  bladeburner_success_chance: number;
 }
 
 /**
@@ -226,6 +196,73 @@ export interface CrimeStats {
   charisma_exp: number;
   /** intelligence exp gained from crime */
   intelligence_exp: number;
+}
+
+/**
+ * Data representing the internal values of an Augmentation.
+ * @public
+ */
+export interface AugmentationStats {
+  /** Multiplier to hacking skill */
+  hacking?: number;
+  /** Multiplier to strength skill */
+  strength?: number;
+  /** Multiplier to defense skill */
+  defense?: number;
+  /** Multiplier to dexterity skill */
+  dexterity?: number;
+  /** Multiplier to agility skill */
+  agility?: number;
+  /** Multiplier to charisma skill */
+  charisma?: number;
+  /** Multiplier to hacking experience gain rate */
+  hacking_exp?: number;
+  /** Multiplier to strength experience gain rate */
+  strength_exp?: number;
+  /** Multiplier to defense experience gain rate */
+  defense_exp?: number;
+  /** Multiplier to dexterity experience gain rate */
+  dexterity_exp?: number;
+  /** Multiplier to agility experience gain rate */
+  agility_exp?: number;
+  /** Multiplier to charisma experience gain rate */
+  charisma_exp?: number;
+  /** Multiplier to chance of successfully performing a hack */
+  hacking_chance?: number;
+  /** Multiplier to hacking speed */
+  hacking_speed?: number;
+  /** Multiplier to amount of money the player gains from hacking */
+  hacking_money?: number;
+  /** Multiplier to amount of money injected into servers using grow */
+  hacking_grow?: number;
+  /** Multiplier to amount of reputation gained when working */
+  company_rep?: number;
+  /** Multiplier to amount of reputation gained when working */
+  faction_rep?: number;
+  /** Multiplier to amount of money gained from crimes */
+  crime_money?: number;
+  /** Multiplier to crime success rate */
+  crime_success?: number;
+  /** Multiplier to amount of money gained from working */
+  work_money?: number;
+  /** Multiplier to amount of money produced by Hacknet Nodes */
+  hacknet_node_money?: number;
+  /** Multiplier to cost of purchasing a Hacknet Node */
+  hacknet_node_purchase_cost?: number;
+  /** Multiplier to cost of ram for a Hacknet Node */
+  hacknet_node_ram_cost?: number;
+  /** Multiplier to cost of core for a Hacknet Node */
+  hacknet_node_core_cost?: number;
+  /** Multiplier to cost of leveling up a Hacknet Node */
+  hacknet_node_level_cost?: number;
+  /** Multiplier to Bladeburner max stamina */
+  bladeburner_max_stamina?: number;
+  /** Multiplier to Bladeburner stamina gain rate */
+  bladeburner_stamina_gain?: number;
+  /** Multiplier to effectiveness in Bladeburner Field Analysis */
+  bladeburner_analysis?: number;
+  /** Multiplier to success chance in Bladeburner contracts/operations */
+  bladeburner_success_chance?: number;
 }
 
 /**
@@ -1089,39 +1126,21 @@ export interface TIX {
   getSymbols(): string[];
 
   /**
-   * Returns the price of a stock.
+   * Returns the price of a stock
    *
    * @remarks
    * RAM cost: 2 GB
-   *
-   * The stock’s price is the average of its bid and ask prices. This function requires
-   * that you have the following:
-   *
-   * 1. WSE Account
-   *
-   * 1. TIX API Access
+   * The stock’s price is the average of its bid and ask price.
    *
    * @example
    * ```ts
    * // NS1
-   * stock.getPrice("FSIG");
-   * 
-   * // Choose the first stock symbol from the array of stock symbols.  Get the price
-   * // of the corresponding stock.
-   * var sym = stock.getSymbols()[0];
-   * tprint("Stock symbol: " + sym);
-   * tprint("Stock price: " + stock.getPrice(sym));
+   * stock.getPrice("FISG");
    * ```
    * @example
    * ```ts
    * // NS2
-   * ns.stock.getPrice("FSIG");
-   * 
-   * // Choose the first stock symbol from the array of stock symbols.  Get the price
-   * // of the corresponding stock.
-   * const sym = ns.stock.getSymbols()[0];
-   * ns.tprint("Stock symbol: " + sym);
-   * ns.tprint("Stock price: " + ns.stock.getPrice(sym));
+   * ns.stock.getPrice("FISG");
    * ```
    * @param sym - Stock symbol.
    * @returns The price of a stock.
@@ -2156,7 +2175,7 @@ export interface Singularity {
    * @param name - Name of Augmentation. CASE-SENSITIVE.
    * @returns Augmentation stats.
    */
-  getAugmentationStats(name: string): Multipliers;
+  getAugmentationStats(name: string): AugmentationStats;
 
   /**
    * Install your purchased augmentations.
@@ -4840,77 +4859,6 @@ export interface NS {
    * @remarks
    * RAM cost: 0 GB
    *
-   * If the argument is a string, you can color code your message by prefixing your
-   * string with one of these strings:
-   *
-   * - `"ERROR"`: The whole string will be printed in red. Use this prefix to indicate
-   *   that an error has occurred.
-   *
-   * - `"SUCCESS"`: The whole string will be printed in green, similar to the default
-   *   theme of the Terminal. Use this prefix to indicate that something is correct.
-   *
-   * - `"WARN"`: The whole string will be printed in yellow. Use this prefix to
-   *   indicate that you or a user of your script should be careful of something.
-   *
-   * - `"INFO"`: The whole string will be printed in purplish blue. Use this prefix to
-   *   remind yourself or a user of your script of something. Think of this prefix as
-   *   indicating an FYI (for your information).
-   *
-   * For custom coloring, use ANSI escape sequences. The examples below use the Unicode
-   * escape code `\u001b`. The color coding also works if `\u001b` is replaced with
-   * the hexadecimal escape code `\x1b`. The Bash escape code `\e` is not supported.
-   * The octal escape code `\033` is not allowed because the game runs JavaScript in
-   * strict mode.
-   *
-   * @example
-   * ```ts
-   * // NS1
-   * // Default color coding.
-   * print("ERROR means something's wrong.");
-   * print("SUCCESS means everything's OK.");
-   * print("WARN Tread with caution!");
-   * print("WARNING, warning, danger, danger!");
-   * print("WARNing! Here be dragons.");
-   * print("INFO for your I's only (FYI).");
-   * print("INFOrmation overload!");
-   * // Custom color coding. 
-   * var cyan = "\u001b[36m";
-   * var green = "\u001b[32m";
-   * var red = "\u001b[31m";
-   * var reset = "\u001b[0m";
-   * var msgError = red + "Ugh! What a mess." + reset;
-   * var msgSuccess = green + "Well done!" + reset;
-   * var msgMixed = cyan + "ERROR Should this be in red?" + reset;
-   * print(msgError);
-   * print(msgSuccess);
-   * print(msgMixed);
-   * tail();
-   * ```
-   * @example
-   * ```ts
-   * // NS2
-   * // Default color coding.
-   * ns.print("ERROR means something's wrong.");
-   * ns.print("SUCCESS means everything's OK.");
-   * ns.print("WARN Tread with caution!");
-   * ns.print("WARNING, warning, danger, danger!");
-   * ns.print("WARNing! Here be dragons.");
-   * ns.print("INFO for your I's only (FYI).");
-   * ns.print("INFOrmation overload!");
-   * // Custom color coding.
-   * const cyan = "\u001b[36m";
-   * const green = "\u001b[32m";
-   * const red = "\u001b[31m";
-   * const reset = "\u001b[0m";
-   * const msgError = "Ugh! What a mess.";
-   * const msgSuccess = "Well done!";
-   * const msgMixed = "ERROR Should this be in red?";
-   * ns.print(`${red + msgError + reset}`);
-   * ns.print(`${green + msgSuccess + reset}`);
-   * ns.print(`${cyan + msgMixed + reset}`);
-   * ns.tail();
-   * ```
-   *
    * @param args - Value(s) to be printed.
    */
   print(...args: any[]): void;
@@ -4920,38 +4868,8 @@ export interface NS {
    * @remarks
    * RAM cost: 0 GB
    *
-   * - See {@link NS.print | print} for how to add color to your printed strings.
-   *
-   * - For more detail, see: https://github.com/alexei/sprintf.js
-   *
-   * @example
-   * ```ts
-   * // NS1
-   * var name = "Bit";
-   * var age = 4;
-   * printf("My name is %s.", name);
-   * printf("I'm %d seconds old.", age);
-   * printf("My age in binary is %b.", age);
-   * printf("My age in scientific notation is %e.", age);
-   * printf("In %d seconds, I'll be %s.", 6, "Byte");
-   * printf("Am I a nibble? %t", (4 == age));
-   * tail();
-   * ```
-   * @example
-   * ```ts
-   * // NS2
-   * const name = "Bit";
-   * const age = 4;
-   * ns.printf("My name is %s.", name);
-   * ns.printf("I'm %d seconds old.", age);
-   * ns.printf("My age in binary is %b.", age);
-   * ns.printf("My age in scientific notation is %e.", age);
-   * ns.printf("In %d seconds, I'll be %s.", 6, "Byte");
-   * ns.printf("Am I a nibble? %t", (4 == age));
-   * ns.tail();
-   * ```
-   *
-   * @param format - Format of the message.
+   * see: https://github.com/alexei/sprintf.js
+   * @param format - format of the message
    * @param args - Value(s) to be printed.
    */
   printf(format: string, ...args: any[]): void;
@@ -4960,8 +4878,6 @@ export interface NS {
    * Prints one or more values or variables to the Terminal.
    * @remarks
    * RAM cost: 0 GB
-   *
-   * See {@link NS.print | print} for how to add color to your printed strings.
    *
    * @param args - Value(s) to be printed.
    */
@@ -4972,14 +4888,9 @@ export interface NS {
    * @remarks
    * RAM cost: 0 GB
    *
-   * - See {@link NS.print | print} for how to add color to your printed strings.
-   * 
-   * - See {@link NS.printf | printf} for examples on formatted strings.
-   * 
-   * - For more detail, see: https://github.com/alexei/sprintf.js
-   *
-   * @param format - Format of the message.
-   * @param values - Value(s) to be printed.
+   * see: https://github.com/alexei/sprintf.js
+   * @param format - format of the message
+   * @param msg - Value to be printed.
    */
   tprintf(format: string, ...values: any[]): void;
 

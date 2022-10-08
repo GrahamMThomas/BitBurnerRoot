@@ -4,6 +4,8 @@ export async function main(ns) {
     ns.print("Needs args yo");
     return;
   }
+
+  //commoent
   const alphabet = [
     "A",
     "B",

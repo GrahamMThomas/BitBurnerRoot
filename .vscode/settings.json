@@ -1,8 +1,8 @@
 {
     "javascript.preferences.importModuleSpecifier": "non-relative",
     "files.exclude": {
-        "jsconfig.json": true,
-        "NetscriptDefinitions.d.ts": true,
+        "jsconfig.json": false,
+        "NetscriptDefinitions.d.ts": false,
     },
     "bitburner.authToken": "KeESh31i0bQwXcr9hIdM5EaAuUQpP+1I/XhYQJPxZ/CL2qrAke0my1CBNrCh2g20",
     "bitburner.scriptRoot": ".",
