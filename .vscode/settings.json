@@ -4,13 +4,12 @@
         "jsconfig.json": false,
         "NetscriptDefinitions.d.ts": false,
     },
-    "bitburner.authToken": "KeESh31i0bQwXcr9hIdM5EaAuUQpP+1I/XhYQJPxZ/CL2qrAke0my1CBNrCh2g20",
-    "bitburner.scriptRoot": ".",
-    "bitburner.fileWatcher.enable": true,
-    "bitburner.showPushSuccessNotification": true,
-    "bitburner.showFileWatcherEnabledNotification": true,
     "prettier.printWidth": 100,    
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnSave": true
 }
