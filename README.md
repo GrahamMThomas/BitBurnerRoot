@@ -7,10 +7,12 @@
 *** Don't forget to give the project a star!
 *** Thanks again! Now go create something AMAZING! :D
 -->
+<div>
 <a href="https://store.steampowered.com/app/1812820/Bitburner">
 <img src="https://img.shields.io/badge/BitBurner-000000?style=flat&logo=steam&logoColor=white&label=Steam" /> 
 </a>
 <img src="https://img.shields.io/badge/Typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white" /> 
+</div>
 
 ---
 
