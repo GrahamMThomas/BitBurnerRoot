@@ -1,5 +1,12 @@
 /** @param {NS} ns */
 export function toDollars(num) {
+  let posNum = Math.abs(num);
+  let isNegative = false;
+  if (num < 0) {
+    isNegative = true;
+  } else if (num == 0) {
+    return "0";
+  }
   const lookup = [
     { value: 1, symbol: "" },
     { value: 1e3, symbol: "k" },
@@ -14,9 +21,11 @@ export function toDollars(num) {
     .slice()
     .reverse()
     .find(function (item) {
-      return num >= item.value;
+      return posNum >= item.value;
     });
-  return item ? (num / item.value).toFixed(2).replace(rx, "$1") + item.symbol : "0";
+  return item
+    ? (isNegative ? "-" : "") + (posNum / item.value).toFixed(2).replace(rx, "$1") + item.symbol
+    : num.toFixed(3);
 }
 
 export function nmap(ns) {

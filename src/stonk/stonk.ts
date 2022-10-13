@@ -1,8 +1,6 @@
 import { NS } from "/../NetscriptDefinitions";
 
-const PRICE_HISTORY_LENGTH = 30;
-const MAGNITUDE_WEIGHT = 5;
-const RECENT_UPDOOTS_WEIGHT = 0.008;
+export const PRICE_HISTORY_LENGTH = 15;
 
 interface TickData {
   price: number; // Price at current tick
@@ -34,22 +32,23 @@ export class Stonk {
     }
   }
 
+  // Returns number between 0 and 1 as a percent of chance it will go up
   getForecast(): number {
     if (this.ns.stock.has4SDataTIXAPI()) {
       return this.ns.stock.getForecast(this.ticker);
     } else {
-      const magnitudeCoef = 0.5 / PRICE_HISTORY_LENGTH;
+      return this.priceHistory.filter((x) => x.bull).length / this.priceHistory.length;
+    }
+  }
 
-      let forecast = 0.5;
-      let i = 1;
-      for (const tickData of this.priceHistory) {
-        const changeAmount = magnitudeCoef * tickData.magnitude * MAGNITUDE_WEIGHT;
-        const latestWeight = Math.log(i) * RECENT_UPDOOTS_WEIGHT;
-
-        forecast += (changeAmount + latestWeight) * (tickData.bull ? 1 : -1);
-        i += 1;
-      }
-      return forecast;
+  getVolatility(): number {
+    if (this.ns.stock.has4SDataTIXAPI()) {
+      return this.ns.stock.getVolatility(this.ticker);
+    } else {
+      const magnitudeList = this.priceHistory.flatMap((x) =>
+        x.magnitude == 0 ? [] : Math.abs(x.magnitude)
+      );
+      return magnitudeList.reduce((a, b) => a + b, 0) / magnitudeList.length;
     }
   }
 
