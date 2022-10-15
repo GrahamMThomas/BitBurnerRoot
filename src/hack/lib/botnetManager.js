@@ -138,7 +138,7 @@ export function getBotnetInfo(ns) {
     botnetInfo.availableRam += availableRam;
   }
 
-  if (botnetInfo.maxRam < 65535 && false) {
+  if (botnetInfo.maxRam < 65535 && ns.getServerMaxRam("home") > 256) {
     let maxRam = ns.getServerMaxRam("home");
     let availableRam = maxRam - ns.getServerUsedRam("home");
     botnetInfo.servers.push("home");
