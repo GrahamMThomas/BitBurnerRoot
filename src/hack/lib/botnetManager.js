@@ -7,7 +7,7 @@ export const SPLIT_BEHAVIOUR = {
 };
 
 export function batchOntoBotnet(ns, batchSettings) {
-  let ramCost = ns.getScriptRam(batchSettings.script);
+  let ramCost = ns.getScriptRam(batchSettings.script, "home");
 
   let execCalls = [];
   let botnetInfo = getBotnetInfo(ns);
@@ -20,14 +20,16 @@ export function batchOntoBotnet(ns, batchSettings) {
     let threadsNeeded = batchEntry.threadCount;
     let batchSuccess = false;
 
-    // ns.print(`\n${callKey}: ${batchEntry.splitBehaviour} ${(threadsNeeded*ramCost).toFixed(2)} Threads`)
+    // ns.print(
+    //   `\n${callKey}: ${batchEntry.splitBehaviour} ${(threadsNeeded * ramCost).toFixed(2)} Threads`
+    // );
     // Sort by lowest available ram so the batch takes up the smallest space possible
     for (let serverObj of botnetInfo.serverObjs.sort((a, b) => a.availableRam - b.availableRam)) {
       let serverPreAllocated = serverAllocations[serverObj.server] ?? 0;
       let serverRamLeft = serverObj.availableRam - serverPreAllocated;
       ns.scp(batchSettings.script, serverObj.server, "home");
 
-      // ns.print(`${serverObj.server} (${serverRamLeft}) (${serverPreAllocated})`)
+      // ns.print(`${serverObj.server} (${serverRamLeft}) (${serverPreAllocated})`);
       // Server has space for whole job
       if (
         serverRamLeft >= ramCost * threadsNeeded &&
@@ -39,7 +41,7 @@ export function batchOntoBotnet(ns, batchSettings) {
         serverAllocations[serverObj.server] =
           (serverAllocations[serverObj.server] ?? 0) + ramCost * threadsNeeded;
         batchSuccess = true;
-        // ns.print("Fit great send it.")
+        // ns.print("Fit great send it.");
         break;
       }
       // Fill in nooks and crannies
@@ -66,15 +68,17 @@ export function batchOntoBotnet(ns, batchSettings) {
     if (batchEntry.splitBehaviour == SPLIT_BEHAVIOUR.LEAST) {
       for (let serverObj of botnetInfo.serverObjs.sort((a, b) => b.availableRam - a.availableRam)) {
         ns.scp(batchSettings.script, serverObj.server, "home");
-        let serverRamLeft = serverObj.availableRam - (serverAllocations[serverObj.server] ?? 0);
-        let threadsCapable = Math.min(Math.floor(serverRamLeft / ramCost), threadsNeeded);
-        threadsNeeded -= threadsCapable;
+        let serverPreAllocated = serverAllocations[serverObj.server] ?? 0;
+        let serverRamLeft = serverObj.availableRam - serverPreAllocated;
+        // ns.print(`${serverObj.server} (${serverRamLeft}) (${serverPreAllocated})`);
 
+        let threadsCapable = Math.min(Math.floor(serverRamLeft / ramCost), threadsNeeded);
+        // ns.print(`Using ${threadsCapable} of ${threadsNeeded} (${ramCost}) Ram per thread`);
+        threadsNeeded -= threadsCapable;
         execCalls.push(() =>
           ns.exec(batchSettings.script, serverObj.server, threadsCapable, ...batchEntry.args)
         );
-        serverAllocations[serverObj.server] =
-          (serverAllocations[serverObj.server] ?? 0) + ramCost * threadsCapable;
+        serverAllocations[serverObj.server] = serverPreAllocated + ramCost * threadsCapable;
         if (threadsNeeded <= 0) {
           batchSuccess = true;
           break;
@@ -91,6 +95,7 @@ export function batchOntoBotnet(ns, batchSettings) {
   }
 
   for (let execCall of execCalls) {
+    // ns.enableLog("exec");
     execCall();
   }
   return true;
@@ -110,10 +115,10 @@ export function getBotnetInfo(ns) {
   let allRootedServers = ns.scan();
 
   // Excluded marked for upgrade servers
+  allRootedServers = allRootedServers.filter((server) => ns.hasRootAccess(server));
   allRootedServers = allRootedServers.filter((server) => !ns.peek(1).split(",").includes(server));
 
   botnetInfo.servers = allRootedServers;
-  botnetInfo.servers.push("home");
 
   // If maxRam > 512 then only use purchased servers
   if (botnetInfo.maxRam > 512) {
@@ -133,7 +138,7 @@ export function getBotnetInfo(ns) {
     botnetInfo.availableRam += availableRam;
   }
 
-  if (botnetInfo.maxRam < 65535) {
+  if (botnetInfo.maxRam < 65535 && false) {
     let maxRam = ns.getServerMaxRam("home");
     let availableRam = maxRam - ns.getServerUsedRam("home");
     botnetInfo.servers.push("home");

@@ -12,29 +12,29 @@ export async function main(ns) {
 
   await ns.sleep(sleepTiming);
 
-  writeLog(ns, `Init [${uniqifier}] ${command} ${target}`, {
-    secLv: ns.getServerSecurityLevel(target),
-  });
+  // writeLog(ns, `Init [${uniqifier}] ${command} ${target}`, {
+  //   secLv: ns.getServerSecurityLevel(target),
+  // }); //
 
   let outputValue = 0;
 
   if (command == "hack") {
     outputValue = await ns.hack(target);
-    ns.toast(`[${uniqifier}] Hacked \$${toDollars(outputValue)}`, "success", 500);
+    ns.toast(`[${uniqifier}] Hacked $${toDollars(outputValue)}`, "success", 500);
   } else if (command == "grow") {
     await ns.grow(target);
-    outputValue = ns.getServerMoneyAvailable(target);
+    // outputValue = ns.getServerMoneyAvailable(target);
   } else if (command == "weaken") {
     await ns.weaken(target);
-    outputValue = ns.getServerSecurityLevel(target);
+    // outputValue = ns.getServerSecurityLevel(target);
   } else {
     ns.toast(`Command ${command} is invalid! Killing...`, "error");
     return;
   }
-  if (outputValue > 100) {
-    outputValue = toDollars(outputValue);
-  }
-  writeLog(ns, `Finished [${uniqifier}] ${command} ${target}`, { output: outputValue });
+  // if (outputValue > 100) {
+  //   outputValue = toDollars(outputValue);
+  // }
+  // writeLog(ns, `Finished [${uniqifier}] ${command} ${target}`, { output: outputValue });
 }
 
 function toDollars(num) {

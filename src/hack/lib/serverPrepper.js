@@ -99,7 +99,8 @@ export async function growServerToMaximum(ns, server) {
   ns.print(`Maximum Cash: ${toDollars(maxMoney)}`);
   ns.print(`Current Cash: ${toDollars(currentMoney)}`);
   ns.print(`Botnet Threads: ${totalBotnetThreads}`);
-  ns.print(`Threads Left: ${neededThreads + weakenNeededThreads}`);
+  ns.print(`Grow Threads Left: ${neededThreads}`);
+  ns.print(`Weaken Threads Left: ${weakenNeededThreads}`);
 
   let growScriptArgs = [server, "grow", 0, PREP_UNIQIFIER];
   let weakenScriptArgs = [server, "weaken", 0, PREP_UNIQIFIER];

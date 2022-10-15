@@ -26,7 +26,7 @@ const SCRIPT_NAME = "/hack/agents/agent007.js";
 export async function main(ns) {
   ns.disableLog("ALL");
   // ns.enableLog("sleep")
-  // ns.enableLog("exec")
+  // ns.enableLog("exec");
 
   let i = 0;
   while (true) {
@@ -113,7 +113,7 @@ export async function main(ns) {
     ns.print(`\n\nMoney in ${Math.round((weakenTime - hackTime) / 1000)} seconds`);
 
     let sleepTime = weakenTime + TIME_BETWEEN_BATCHES * 5;
-    ns.exec("removeLock.js", "home", 1, motherlode, sleepTime);
+    ns.exec("/hack/callbacks/removeHostLock.js", "home", 1, motherlode, sleepTime);
     await ns.sleep(sleepTime);
   }
 }
@@ -131,6 +131,7 @@ function getHackThreadCount(ns, server, batchCount) {
     }
 
     let ramCost = ns.getScriptRam(SCRIPT_NAME);
+    ns.print(ramCost);
     let { batchGrowCount, batchWeaken1Count, batchWeaken2Count } = getOtherThreadCounts(
       ns,
       server,
