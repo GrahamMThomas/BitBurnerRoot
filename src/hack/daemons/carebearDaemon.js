@@ -1,7 +1,7 @@
 /** @param {NS} ns */
 import { getBotnetInfo, batchOntoBotnet, SPLIT_BEHAVIOUR } from "hack/lib/botnetManager.js";
 
-const SCRIPT_NAME = "hack/agents/agentShareTheLove.js";
+const SCRIPT_NAME = "/hack/agents/agentShareTheLove.js";
 
 export async function main(ns) {
   ns.disableLog("ALL");

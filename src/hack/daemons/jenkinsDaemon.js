@@ -1,7 +1,7 @@
 /** @param {NS} ns */
 
 import { toDollars } from "hack/lib/helpers.js";
-import { getServersByHackDesireability } from "hack/lib/money-detector.js";
+import { getServersByHackDesireability } from "hack/lib/metal-detector.js";
 import {
   getBotnetInfo,
   batchOntoBotnet,
@@ -21,7 +21,7 @@ const HACK_SECURITY_LEVEL_AMOUNT = 0.002;
 const TIME_GAP = 100; // ms
 const TIME_BETWEEN_BATCHES = 4 * TIME_GAP;
 
-const SCRIPT_NAME = "agent007.js";
+const SCRIPT_NAME = "/hack/agents/agent007.js";
 
 export async function main(ns) {
   ns.disableLog("ALL");
@@ -222,7 +222,9 @@ async function selectTarget(ns) {
     if (ns.getServerMaxMoney(server) == 0) {
       continue;
     }
-    if (ns.getServerRequiredHackingLevel(server) <= ns.getPlayer().skills.hacking * 0.75) {
+    if (
+      ns.getServerRequiredHackingLevel(server) <= Math.max(ns.getPlayer().skills.hacking * 0.75, 1)
+    ) {
       if (!ns.hasRootAccess(server)) {
         ns.toast(`Need Root: ${server}`, "info");
         continue;

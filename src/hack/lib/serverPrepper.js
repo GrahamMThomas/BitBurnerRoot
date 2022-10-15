@@ -10,7 +10,7 @@ import { toDollars } from "hack/lib/helpers.js";
 
 const PREP_UNIQIFIER = "prep";
 
-const SCRIPT_NAME_AGENT = "hack/agents/agent007.js";
+const SCRIPT_NAME_AGENT = "/hack/agents/agent007.js";
 
 export function prepServer(ns, server) {
   let isPrepped = true;
