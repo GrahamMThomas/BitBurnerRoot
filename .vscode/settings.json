@@ -4,7 +4,7 @@
         "jsconfig.json": false,
         "NetscriptDefinitions.d.ts": false,
     },
-    "prettier.printWidth": 100,    
+    "prettier.printWidth": 115,    
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },

@@ -11,7 +11,8 @@ export async function main(ns: NS) {
       const bastion = serverQueue.pop()!;
       visitedServers.push(bastion);
 
-      const newServers = ns.scan(bastion);
+      let newServers = ns.scan(bastion);
+      newServers = newServers.filter((x) => !x.includes("jenkins"));
       serverQueue = serverQueue.concat(newServers.filter((x) => !visitedServers.includes(x)));
 
       const portsNeeded = ns.getServerNumPortsRequired(bastion);
