@@ -42,8 +42,20 @@ export function weakenServerToMinimum(ns, server) {
 
   ns.print(`Current Security: ${currentSec}`);
   ns.print(`Minimum Security: ${minSec}`);
+  ns.print(`Total Threads Needed: ${neededThreads}`);
+
+  if (neededThreads > totalBotnetThreads * 5) {
+    ns.print("Botnet too weak to weaken efficiently");
+    return false;
+  }
+
+  // Reduce threads until job fits on botnet
+  while (totalBotnetThreads * 0.9 < neededThreads) {
+    neededThreads -= 1;
+  }
+
   ns.print(`Botnet Threads: ${totalBotnetThreads}`);
-  ns.print(`Threads Left: ${neededThreads}`);
+  ns.print(`Prepping w/ Threads: ${neededThreads}`);
 
   let scriptArgs = [server, "weaken", 0, PREP_UNIQIFIER];
 
@@ -88,6 +100,14 @@ export async function growServerToMaximum(ns, server) {
     (neededThreads * growSecurityLevelAmount) / weakenSecurityLevelAmount
   );
 
+  if (neededThreads + weakenNeededThreads > totalBotnetThreads * 10) {
+    ns.print("Botnet too weak to grow efficiently");
+    return false;
+  }
+
+  ns.print(`Maximum Cash: ${toDollars(maxMoney)}`);
+  ns.print(`Current Cash: ${toDollars(currentMoney)}`);
+  ns.print(`Total Threads Needed: ${neededThreads + weakenNeededThreads}`);
   // Reduce threads until job fits on botnet
   while (totalBotnetThreads * 0.9 < neededThreads + weakenNeededThreads) {
     neededThreads -= 1;
@@ -96,8 +116,6 @@ export async function growServerToMaximum(ns, server) {
     );
   }
 
-  ns.print(`Maximum Cash: ${toDollars(maxMoney)}`);
-  ns.print(`Current Cash: ${toDollars(currentMoney)}`);
   ns.print(`Botnet Threads: ${totalBotnetThreads}`);
   ns.print(`Grow Threads Left: ${neededThreads}`);
   ns.print(`Weaken Threads Left: ${weakenNeededThreads}`);
