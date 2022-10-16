@@ -2,7 +2,7 @@
 import { getBotnetInfo } from "hack/lib/botnetManager.js";
 
 export async function main(ns) {
-  ns.exec("hack/daemons/shareDaemon.js", "home", 1);
+  ns.exec("hack/daemons/carebearDaemon.js", "home", 1);
   ns.exec("hack/daemons/beaverDaemon.js", "home", 1);
   ns.exec("hack/daemons/ahegaoDaemon.js", "home", 1);
   ns.exec("hack/daemons/timberDaemon.js", "home", 1);
