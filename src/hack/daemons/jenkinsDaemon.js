@@ -10,8 +10,6 @@ import {
 } from "hack/lib/botnetManager.js";
 import { prepServer } from "hack/lib/serverPrepper.js";
 
-const CORE_COUNT = 1;
-
 const MAX_PERCENT_MONEY_TO_STEAL = 80;
 
 const WEAKEN_SECURITY_LEVEL_AMOUNT = -0.05;
@@ -50,9 +48,9 @@ export async function main(ns) {
     let percentMoneyPerBatch = percentMoneyPerHack * 100 * batchHackCount;
     let cashPerBatch = percentMoneyPerHack * batchHackCount * maxServerCash;
 
-    ns.print(`Max Server Cash: \$${toDollars(maxServerCash)}`);
+    ns.print(`Max Server Cash: $${toDollars(maxServerCash)}`);
     ns.print(`Percentage of max money per batch: ${percentMoneyPerBatch.toFixed(2)}%`);
-    ns.print(`Cash per batch: \$${toDollars(cashPerBatch)}`);
+    ns.print(`Cash per batch: $${toDollars(cashPerBatch)}`);
     ns.print(`\nChance to Hack: ${(ns.hackAnalyzeChance(motherlode) * 100).toFixed(2)}%`);
 
     // Calculate Thread Counts
@@ -113,7 +111,7 @@ export async function main(ns) {
     ns.print(`\n\nMoney in ${Math.round((weakenTime - hackTime) / 1000)} seconds`);
 
     let sleepTime = weakenTime + TIME_BETWEEN_BATCHES * 5;
-    ns.exec("/hack/callbacks/removeHostLock.js", "home", 1, motherlode, sleepTime);
+    ns.exec("/hack/callbacks/removeHostLock.js", "home", 1, motherlode, sleepTime - 100);
     await ns.sleep(sleepTime);
   }
 }
@@ -131,7 +129,6 @@ function getHackThreadCount(ns, server, batchCount) {
     }
 
     let ramCost = ns.getScriptRam(SCRIPT_NAME);
-    ns.print(ramCost);
     let { batchGrowCount, batchWeaken1Count, batchWeaken2Count } = getOtherThreadCounts(
       ns,
       server,
@@ -150,6 +147,7 @@ function getHackThreadCount(ns, server, batchCount) {
     ) {
       batchHackCount += 1;
     } else {
+      batchHackCount = Math.max(batchHackCount - 1, 1);
       break;
     }
   }
@@ -266,10 +264,4 @@ async function selectTarget(ns) {
   }
 
   return motherlode;
-}
-
-async function removeLock(ns, server) {
-  let locks = await ns.readPort(2).split(",");
-  locks = locks.filter((x) => x != server);
-  await ns.writePort(2, locks.join(","));
 }
