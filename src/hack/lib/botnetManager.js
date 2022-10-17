@@ -31,15 +31,9 @@ export function batchOntoBotnet(ns, batchSettings) {
 
       // ns.print(`${serverObj.server} (${serverRamLeft}) (${serverPreAllocated})`);
       // Server has space for whole job
-      if (
-        serverRamLeft >= ramCost * threadsNeeded &&
-        batchEntry.splitBehaviour == SPLIT_BEHAVIOUR.NONE
-      ) {
-        execCalls.push(() =>
-          ns.exec(batchSettings.script, serverObj.server, threadsNeeded, ...batchEntry.args)
-        );
-        serverAllocations[serverObj.server] =
-          (serverAllocations[serverObj.server] ?? 0) + ramCost * threadsNeeded;
+      if (serverRamLeft >= ramCost * threadsNeeded && batchEntry.splitBehaviour == SPLIT_BEHAVIOUR.NONE) {
+        execCalls.push(() => ns.exec(batchSettings.script, serverObj.server, threadsNeeded, ...batchEntry.args));
+        serverAllocations[serverObj.server] = (serverAllocations[serverObj.server] ?? 0) + ramCost * threadsNeeded;
         batchSuccess = true;
         // ns.print("Fit great send it.");
         break;
@@ -50,9 +44,7 @@ export function batchOntoBotnet(ns, batchSettings) {
         // ns.print(`Used ${threadsCapable} of ${threadsNeeded}`)
         threadsNeeded -= threadsCapable;
 
-        execCalls.push(() =>
-          ns.exec(batchSettings.script, serverObj.server, threadsCapable, ...batchEntry.args)
-        );
+        execCalls.push(() => ns.exec(batchSettings.script, serverObj.server, threadsCapable, ...batchEntry.args));
         serverAllocations[serverObj.server] =
           (serverAllocations[serverObj.server] ?? 0) + ramCost * threadsCapable;
         if (threadsNeeded <= 0) {
@@ -75,9 +67,7 @@ export function batchOntoBotnet(ns, batchSettings) {
         let threadsCapable = Math.min(Math.floor(serverRamLeft / ramCost), threadsNeeded);
         // ns.print(`Using ${threadsCapable} of ${threadsNeeded} (${ramCost}) Ram per thread`);
         threadsNeeded -= threadsCapable;
-        execCalls.push(() =>
-          ns.exec(batchSettings.script, serverObj.server, threadsCapable, ...batchEntry.args)
-        );
+        execCalls.push(() => ns.exec(batchSettings.script, serverObj.server, threadsCapable, ...batchEntry.args));
         serverAllocations[serverObj.server] = serverPreAllocated + ramCost * threadsCapable;
         if (threadsNeeded <= 0) {
           batchSuccess = true;
@@ -138,17 +128,17 @@ export function getBotnetInfo(ns) {
     botnetInfo.availableRam += availableRam;
   }
 
-  if (botnetInfo.maxRam < 65535 && ns.getServerMaxRam("home") > 256) {
-    let maxRam = ns.getServerMaxRam("home");
-    let availableRam = maxRam - ns.getServerUsedRam("home");
+  let homeMaxRam = ns.getServerMaxRam("home");
+  if (botnetInfo.maxRam < homeMaxRam * 4 && homeMaxRam > 256) {
+    let availableRam = homeMaxRam - ns.getServerUsedRam("home");
     botnetInfo.servers.push("home");
     botnetInfo.serverObjs.push({
       server: "home",
-      maxRam: maxRam,
+      maxRam: homeMaxRam,
       availableRam: availableRam,
     });
 
-    botnetInfo.maxRam += maxRam;
+    botnetInfo.maxRam += homeMaxRam;
     botnetInfo.availableRam += availableRam;
   }
 
