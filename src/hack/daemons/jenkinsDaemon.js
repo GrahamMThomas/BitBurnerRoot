@@ -2,12 +2,7 @@
 
 import { toDollars } from "hack/lib/helpers.js";
 import { getServersByHackDesireability } from "hack/lib/metal-detector.js";
-import {
-  getBotnetInfo,
-  batchOntoBotnet,
-  SPLIT_BEHAVIOUR,
-  isScriptOnBotnet,
-} from "hack/lib/botnetManager.js";
+import { getBotnetInfo, batchOntoBotnet, SPLIT_BEHAVIOUR, isScriptOnBotnet } from "hack/lib/botnetManager.js";
 import { prepServer } from "hack/lib/serverPrepper.js";
 
 const MAX_PERCENT_MONEY_TO_STEAL = 80;
@@ -40,7 +35,7 @@ export async function main(ns) {
     let maxServerCash = ns.getServerMaxMoney(motherlode);
     let percentMoneyPerHack = ns.hackAnalyze(motherlode);
 
-    let batchCount = Math.floor((hackTime - TIME_BETWEEN_BATCHES) / TIME_BETWEEN_BATCHES);
+    let batchCount = Math.max(Math.floor((hackTime - TIME_BETWEEN_BATCHES) / TIME_BETWEEN_BATCHES), 1);
     let batchHackCount = getHackThreadCount(ns, motherlode, batchCount);
 
     // Calculate Money
@@ -96,7 +91,7 @@ export async function main(ns) {
     ns.print("\n\nBatch Settings:");
     ns.print(JSON.stringify(batchSettings, null, 2));
 
-    for (let i = 1; i <= batchCount * 0.8; i += 1) {
+    for (let i = 1; i <= Math.max(batchCount * 0.8, 1); i += 1) {
       batchSettings.i = i;
       if (i % Math.ceil(batchCount / 20) == 0 || i == batchCount) {
         ns.print(`Iteration #${i} MaxBatchCount: ${batchCount}`);
@@ -135,16 +130,10 @@ function getHackThreadCount(ns, server, batchCount) {
       batchHackCount
     );
     let roundRobinCost =
-      batchCount *
-      (batchHackCount + batchGrowCount + batchWeaken1Count + batchWeaken2Count) *
-      ramCost;
+      batchCount * (batchHackCount + batchGrowCount + batchWeaken1Count + batchWeaken2Count) * ramCost;
 
-    let maxRamCost =
-      Math.max(batchHackCount, batchGrowCount, batchWeaken1Count, batchWeaken2Count) * ramCost;
-    if (
-      roundRobinCost < getBotnetInfo(ns).maxRam &&
-      canRamHandleBatch(ns, maxRamCost, batchCount)
-    ) {
+    let maxRamCost = Math.max(batchHackCount, batchGrowCount, batchWeaken1Count, batchWeaken2Count) * ramCost;
+    if (roundRobinCost < getBotnetInfo(ns).maxRam && canRamHandleBatch(ns, maxRamCost, batchCount)) {
       batchHackCount += 1;
     } else {
       batchHackCount = Math.max(batchHackCount - 1, 1);
@@ -198,19 +187,9 @@ function hydrateBatchSettingsWithScriptArgs(ns, batchSettings) {
   let weaken2SleepTime = batchSettings.timeBuffer + 0 + 2 * batchSettings.timeGap;
 
   batchSettings.calls.hack.args = [batchSettings.target, "hack", hackSleepTime, batchSettings.i];
-  batchSettings.calls.weaken1.args = [
-    batchSettings.target,
-    "weaken",
-    weaken1SleepTime,
-    batchSettings.i,
-  ];
+  batchSettings.calls.weaken1.args = [batchSettings.target, "weaken", weaken1SleepTime, batchSettings.i];
   batchSettings.calls.grow.args = [batchSettings.target, "grow", growSleepTime, batchSettings.i];
-  batchSettings.calls.weaken2.args = [
-    batchSettings.target,
-    "weaken",
-    weaken2SleepTime,
-    batchSettings.i,
-  ];
+  batchSettings.calls.weaken2.args = [batchSettings.target, "weaken", weaken2SleepTime, batchSettings.i];
 }
 
 async function selectTarget(ns) {
@@ -221,11 +200,9 @@ async function selectTarget(ns) {
     if (ns.getServerMaxMoney(server) == 0) {
       continue;
     }
-    if (
-      ns.getServerRequiredHackingLevel(server) <= Math.max(ns.getPlayer().skills.hacking * 0.75, 1)
-    ) {
+    if (ns.getServerRequiredHackingLevel(server) <= Math.max(ns.getPlayer().skills.hacking * 0.75, 1)) {
       if (!ns.hasRootAccess(server)) {
-        ns.toast(`Need Root: ${server}`, "info");
+        ns.toast(`Need Root: ${server}`, "info", 250);
         continue;
       }
 
@@ -234,12 +211,7 @@ async function selectTarget(ns) {
 
       if (
         prepServer(ns, server) &&
-        !isScriptOnBotnet(ns, SCRIPT_NAME, [
-          server,
-          "weaken",
-          0,
-          batchCount - Math.round(batchCount * 0.1),
-        ])
+        !isScriptOnBotnet(ns, SCRIPT_NAME, [server, "weaken", 0, batchCount - Math.round(batchCount * 0.1)])
       ) {
         let otherDaemonLocks = ns.peek(2).split(",");
         ns.print(`Daemon Locks: ${otherDaemonLocks}`);
